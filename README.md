@@ -15,7 +15,7 @@ This article will help you to understand the whole CI/CD process and setup a ver
 
 Because you will tell the machine what should it do, so it might not be smart enough. You have to understand deeper the build settings in your project, not only the code. Base on Prerequisites section as below, it might help you to find out the root cause.
 
-Also, I have list down some QnA that may help you in the last section Questions and Answers. If there is any others questions and issues, feel free to ask me. Or, it would be grateful if you can tell me something to improve this article, this is very first article.
+Also, I have list down some QnA that may help you in the last section Questions and Answers. If there is any others questions and issues, feel free to ask me. Or, it would be grateful if you can tell me somethings to improve this article, this is my very first time.
 
 ###### Machine environments
 
