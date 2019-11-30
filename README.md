@@ -3,11 +3,19 @@
 </h1>
 
 <h3 align="center">
-  <img src="https://github.com/phhai1710/Fastlane-GitHub-Jenkins/blob/master/Resources/header_logo.png?raw=true" alt="fastlane Logo" width="500">
+  <img src="https://github.com/phhai1710/Fastlane-GitHub-Jenkins/blob/master/Resources/header_logo.png?raw=true">
   </a>
 </h3>
 
 
+
+# Quick start
+
+This article will help you to understand the whole CI/CD process and setup a very simple project. But, depends on your local machine and environment, it might have different step or some issues. 
+
+Because you will tell the machine what should it do, so it might not be smart enough. You have to understand deeper the build settings in your project, not only the code. Base on Prerequisites section as below, it might help you to find out the root cause.
+
+Also, I have list down some QnA that may help you in the last section Questions and Answers. If there is any others questions and issues, feel free to ask me. Or, it would be grateful if you can tell me something to improve this article, this is very first article.
 
 ###### Machine environments
 
@@ -34,14 +42,29 @@
 - https://www.raywenderlich.com/1774995-continuous-integration-with-github-fastlane-jenkins
 - https://jenkins.io/doc/
 - https://docs.fastlane.tools/best-practices/continuous-integration/jenkins/
+- https://medium.com/appcoda-tutorials/continuous-integration-and-continuous-delivery-with-jenkins-and-fastlane-d5979f2f2b3f
 
-# 1. Fastlane:
+# 1. What is CI/CD?
+
+![](https://github.com/phhai1710/Fastlane-GitHub-Jenkins/blob/master/Resources/Development-Process.png?raw=true)
+
+**CI/CD** generally refers to the combined practices of [continuous integration](https://en.wikipedia.org/wiki/Continuous_integration) and [continuous delivery](https://en.wikipedia.org/wiki/Continuous_delivery).
+
+Testing is an essential part of development process. Developers merge their changes back to the main branch as often as possible. The developer's changes are validated by creating a build and running some tests(Automation test). This entire process is what we call **Continuous Integration (CI)**.
+
+**Continuous delivery(CD)** is an extension of continuous integration to make sure that you can release new changes to your customers quickly in a sustainable way. This means,  beside of having automated your testing, you also have automated your release process.
+
+![](https://github.com/phhai1710/Fastlane-GitHub-Jenkins/blob/master/Resources/CICD%20flow.png?raw=true)
+
+
+
+# 2. Fastlane:
 
 _fastlane_ is a tool for iOS and Android developers to automate tedious tasks like generating screenshots, dealing with provisioning profiles, and releasing your application.
 
-## 1.2 Getting Started:  
+## 2.1 Getting Started:  
 
-### 1.2.1 Setup Fastlane:
+### 2.1.1 Setup Fastlane:
 
 The tool fastlane is a collection of *Ruby scripts*, so you must have the correct version of Ruby installed. Chances are that your OS comes with *Ruby 2.0* by default, but you can confirm whether this is the case by opening Terminal and entering:
 
@@ -99,7 +122,7 @@ Back to project folder, you’ll see a few new things:
 
 ![](https://github.com/phhai1710/Fastlane-GitHub-Jenkins/blob/master/Resources/fastlane_file.png?raw=true)
 
-### 1.2.2 Setup environment variables:
+### 2.1.2 Setup environment variables:
 
 *fastlane* requires some environment variables set up to run correctly. In particular, having your locale not set to a UTF-8 locale will cause issues with building and uploading your build. In your shell profile add the following lines:
 
@@ -108,9 +131,9 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 ```
 
-## 1.3 Configuration fastlane:
+## 2.2 Configuration fastlane:
 
-### 1.3.1 Appfile
+### 2.2.1 Appfile
 
 ```ruby
 # app_identifier("[[APP_IDENTIFIER]]") # The bundle identifier of your app
@@ -126,11 +149,11 @@ Remove the **#** in the beginning of the line to enable the options
 In case your account has multiple teams, add the following lines:
 
 ```ruby
-itc_team_id("120184686") # App Store Connect Team ID
-team_id("N4Q7U8RR8X") # Developer Portal Team ID
+itc_team_id("123456789") # App Store Connect Team ID
+team_id("XXXXXXXXXX") # Developer Portal Team ID
 ```
 
-### 1.3.2 Fastfile - Lane configuration
+### 2.2.2 Fastfile - Lane configuration
 
 Open **Fastfile**, you will see something like this:
 
@@ -161,7 +184,7 @@ Or you can refer in [available actions](https://docs.fastlane.tools/actions/)
 
 For more action, check out the [fastlane plugins](https://docs.fastlane.tools/plugins/available-plugins/) page. If you want to create your own action, check out the [local actions](https://docs.fastlane.tools/create-action/#local-actions) page.
 
-### 1.3.3 Build your app
+### 2.2.3 Build your app
 
 *fastlane* takes care of building your app using an **action** called [*build_app*](https://docs.fastlane.tools/actions/build_app/) (alias for ***build_ios_app***, or ***gym***), just add the following to your **Fastfile**:
 
@@ -198,7 +221,7 @@ fastlane lane_dev
 
 If everything works, you should have a `FastlanePlayground.ipa` file in the current directory. If you see any codesigning error, don't worry, you will go to the next part.
 
-### 1.3.4 Codesigning (Matchfile)
+### 2.2.4 Codesigning (Matchfile)
 
 Chances are that something went wrong because of code signing at the previous step. [Code Signing Guide](https://docs.fastlane.tools/codesigning/getting-started/) will helps you setting up the right code signing approach for your project.
 
@@ -257,11 +280,11 @@ If success, you will see provisioning file info. You should save this **Environm
 
 ![](https://github.com/phhai1710/Fastlane-GitHub-Jenkins/blob/master/Resources/fastlane_match_complete.png?raw=true)
 
-### 1.3.5 Uploading app
+### 2.2.5 Uploading app
 
 After building your app, it's ready to be uploaded to a beta testing service of your choice. The beauty of **fastlane** is that you can easily switch beta provider, or even upload to multiple at once, without any extra work.
 
-#### 1.3.5.1 Firebase Crashlytics
+#### 2.2.5.1 Firebase Crashlytics
 
 [Firebase App Distribution](https://github.com/fastlane-community/fastlane-plugin-firebase_app_distribution) makes distributing your apps to trusted testers painless. By getting your apps onto testers' devices quickly, you can get feedback early and often. To learn more about Firebase App Distribution, go [here](https://firebase.google.com/docs/app-distribution).
 
@@ -278,14 +301,15 @@ lane :lane_dev do
   desc "Build scheme FastlanePlayground"
   match(type: "development") #1
   disable_automatic_code_signing #2
-  update_project_provisioning(profile:ENV["sigh_co.hdwebsoft.FastlanePlayground_development_profile-path"])    #3
+  update_project_provisioning(profile:ENV["sigh_co.hdwebsoft.FastlanePlayground_development_profile-path"],
+                                                        code_signing_identity: "Apple Development: Hai Pham (XXXXXXXXXX)")    #3
   build_app(scheme: "FastlanePlayground", #4
             export_method: "development", #5
             export_options:{
               compileBitcode: false #6
             })
-  firebase_app_distribution(app: "1:434647080927:ios:6c65db07c49a490ca92e6a", #7
-                            release_notes: "Fastlane release 15",
+  firebase_app_distribution(app: "1:434647080927:ios:XXXXXXXXXXXXXXXXXXX", #7
+                            release_notes: "Fastlane release 1",
                             groups: "tester")
   upload_symbols_to_crashlytics(gsp_path: "./FastlanePlayground/Config/GoogleService-Info.plist") #8
 end
@@ -293,9 +317,9 @@ end
 
 Here’s what this code does:
 
-1. Codesigning, fetch provisioning and certificates
+1. Fetch provisioning and certificates
 2. Disable Automatically Code Signing, so you can use provisioning profile
-3. In case provisioning profile has not been set, **build_app** can not do its job because of missing provisioning profile. Because [*match*](https://fastlane.tools/match) has fetched provisioning already, so you can use that profile and update to project
+3. In case provisioning profile has not been set, **build_app** can not do its job because of missing provisioning profile. Because [*match*](https://fastlane.tools/match) has fetched provisioning already, so you can use that profile and update to project (Section 2.2.4)
 4. Build scheme FastlanePlayground
 5. This is method of distribution. Select export method is development
 6. (Optional) For export_method `development`, you should disable **<u>Rebuild from bitcode</u>**. Because you will deploy to Crashlytics, so if bitcode is enable in Build Settings, **Rebuild from bitcode** will re-compile and make another build. In that case, old dSYM will not match with new build. In case deploy to AppStore, you can remove this option because it can be downloaded from App Store Connect, after upload the build. For more understanding, you will need to dig deeper about **bitcode**
@@ -304,17 +328,68 @@ Here’s what this code does:
 
 ![](https://github.com/phhai1710/Fastlane-GitHub-Jenkins/blob/master/Resources/fastlane_beta_distribute_options.png?raw=true)
 
-#### 1.3.5.2 App Store deployment
+#### 2.2.5.2 App Store deployment
 
-<h1>
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-</h1>
+First, you need to configure your app info in App Store Connect. If everything done, then you can comeback to fastlane.
 
+As the previous section, we can upload app to Firebase Crashlytics. With App Store, it will be the same, almost.
 
+```ruby
+lane :lane_prod do
+  desc "Build scheme FastlanePlayground"
 
-# 2. Jenkins
+  disable_automatic_code_signing
+  match(type: "appstore")
+  update_project_provisioning(profile:ENV["sigh_co.hdwebsoft.FastlanePlayground_appstore_profile-path"],
+                              code_signing_identity: "Apple Distribution: Hai Pham (XXXXXXXXXX)")
+  build_app(scheme: "FastlanePlayground",
+            export_method: "app-store",
+            include_bitcode: true)
+  upload_to_app_store
+end
+```
 
-## 2.1 Setup Jenkins
+The above code might look similar already. There is only 1 new action, it is [upload_to_app_store](https://docs.fastlane.tools/actions/upload_to_app_store/), also known as **deliver**.
+
+**deliver** is part of [fastlane](https://fastlane.tools/): The easiest way to automate beta deployments and releases for your iOS and Android apps. 
+
+To start, run this command:
+
+```bash
+fastlane deliver init
+```
+
+It will create all the necessary files for you, using the <u>**existing**</u> app metadata from App Store Connect. Check out your local `./fastlane/metadata` and `./fastlane/screenshots` folders, **deliver** allows for metadata to be set through `.txt` files in the metadata folder.
+
+You can edit app `metadata` by update those file and run below command to upload the app metadata from your local machine.
+
+```bash
+fastlane deliver
+```
+
+To upload an `ipa` file and submit your app for review manually:
+
+```bash
+fastlane deliver --ipa "App.ipa" --submit_for_review
+```
+
+If you use [*fastlane*](https://fastlane.tools/) you don't have to manually specify the path to your `ipa`, just add an action into build lane in your fastfile as below:
+
+```bash
+upload_to_app_store
+```
+
+<center>or</center>
+
+```bash
+deliver
+```
+
+You can **deliver** your app to App Store now, as the configuration in the beginning of this section. **deliver** is a verify powerful tool. It also provide many of [parameters](https://docs.fastlane.tools/actions/upload_to_app_store/#parameters), so you can config your own automatic process.
+
+# 3. Jenkins
+
+## 3.1 Setup Jenkins
 
 Jenkin require Java version 8-11. If device has multiple Java version, you can set the version of <u>**current terminal window**</u> with this command in MacOS.
 
@@ -361,9 +436,9 @@ Select **Install suggested plugins**, this takes several minutes.
 
 Now create your **admin account** — entering **admin** for both **Username** and **Password**. Fill remain others areas and Continue
 
-## 2.2 Configuration Jenkins
+## 3.2 Configuration Jenkins
 
-### 2.2.1 Configuration build
+### 3.2.1 Configuration build
 
 You’ll see a welcome page, prompting you to **New Item** in the side menu:
 
@@ -405,7 +480,7 @@ Something starts happening in the **Build History** section — your first build
 
 ![](https://github.com/phhai1710/Fastlane-GitHub-Jenkins/blob/master/Resources/jenkins-project-console-output.png?raw=true)
 
-### 2.2.2 Notifying Jenkins With GitHub Webhook
+### 3.2.2 Notifying Jenkins With GitHub Webhook
 
 Jenkins pulled your project, built it and ran the test. But you had to tell it to *Build Now* — that’s not very automated
 
@@ -546,3 +621,9 @@ Question 9: I have configed webhooks in github, but Jenkins still not trigger a 
 Answer: You should check the repository URL in **Source Code Management** section. Jenkins will not trigger action when it is not match
 
 ![](https://github.com/phhai1710/Fastlane-GitHub-Jenkins/blob/master/Resources/jenkins-project-source-code.png?raw=true)
+
+------
+
+Question 10: Do we have to use [ngrok](https://ngrok.com/product) for communication between Github and Jenkins?
+
+Answer: No, it is not neccessary. [ngrok](https://ngrok.com/product) is a tool that using for making a connection between Github and Jenkins. So, if you have your own static IP, you dont need to use [ngrok](https://ngrok.com/product).
